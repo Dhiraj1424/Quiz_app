@@ -1,8 +1,41 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:quiz_app/components/gradient_box.dart';
 
-class QuizPage extends StatelessWidget {
+class QuizPage extends StatefulWidget {
   const QuizPage({ Key? key }) : super(key: key);
+
+  @override
+  State<QuizPage> createState() => _QuizPageState();
+}
+
+class _QuizPageState extends State<QuizPage> {
+  late int _currentTime;
+  late Timer _timer;
+
+  @override
+  void initState() {
+    _currentTime=10;
+    super.initState();
+    _timer=Timer.periodic(Duration(seconds: 1), (timer) { 
+      
+    setState(() {
+       print(_currentTime);
+      _currentTime--;
+        if(_currentTime==0){
+        timer.cancel();
+       
+      }
+    });
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +50,7 @@ class QuizPage extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(20)),
                   child: LinearProgressIndicator(
-                    value: 0.1,
+                    value: _currentTime/10,
                   ),
                 ),
               )
