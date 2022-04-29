@@ -6,25 +6,25 @@ import 'package:flutter/foundation.dart';
 
 
 
-class Question {
+class QuestionDataModel {
   final String id;
   final String question;
   final List<String> answers;
   final String correctAnswer;
-  Question({
+  QuestionDataModel({
     required this.id,
     required this.question,
     required this.answers,
     required this.correctAnswer,
   });
 
-  Question copyWith({
+  QuestionDataModel copyWith({
     String? id,
     String? question,
     List<String>? answers,
     String? correctAnswer,
   }) {
-    return Question(
+    return QuestionDataModel(
       id: id ?? this.id,
       question: question ?? this.question,
       answers: answers ?? this.answers,
@@ -43,8 +43,8 @@ class Question {
     return result;
   }
 
-  factory Question.fromMap(Map<String, dynamic> map) {
-    return Question(
+  factory QuestionDataModel.fromMap(Map<String, dynamic> map) {
+    return QuestionDataModel(
       id: map['id'] ?? '',
       question: map['question'] ?? '',
       answers: List<String>.from(map['answers']),
@@ -54,18 +54,18 @@ class Question {
 
   String toJson() => json.encode(toMap());
 
-  factory Question.fromJson(String source) => Question.fromMap(json.decode(source));
+  factory QuestionDataModel.fromJson(String source) => QuestionDataModel.fromMap(json.decode(source));
 
   @override
   String toString() {
-    return 'Question(id: $id, question: $question, answers: $answers, correctAnswer: $correctAnswer)';
+    return 'QuestionDataModel(id: $id, question: $question, answers: $answers, correctAnswer: $correctAnswer)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
   
-    return other is Question &&
+    return other is QuestionDataModel &&
       other.id == id &&
       other.question == question &&
       listEquals(other.answers, answers) &&
@@ -81,14 +81,15 @@ class Question {
   }
 }
 
-List<Question>questions=[
-  Question(id: '1', question: 'what is question', answers: [
+List<QuestionDataModel> questionObjects=[
+ 
+  QuestionDataModel(id: '1', question: 'what is question', answers: [
     '1','2','3','4'
   ], correctAnswer: '2'),
-  Question(id: '2', question: 'what 2 is question', answers: [
+  QuestionDataModel(id: '2', question: 'what 2 is question', answers: [
     '1','2','3','4'
   ], correctAnswer: '1'),
-   Question(id: '2', question: 'what 3rd question', answers: [
+   QuestionDataModel(id: '2', question: 'what 3rd question', answers: [
     '1','2','3','4'
   ], correctAnswer: '4'),
 ];
