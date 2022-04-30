@@ -20,6 +20,7 @@ class _QuizPageState extends State<QuizPage> {
   late Timer _timer;
   int _currentindex = 0;
   String _selectedAnswer = '';
+  int _score = 0;
 
   @override
   void initState() {
@@ -31,6 +32,7 @@ class _QuizPageState extends State<QuizPage> {
         _currentTime--;
         if (_currentTime == 0) {
           timer.cancel();
+           pushResultscreen(context);
         }
       });
     });
@@ -39,6 +41,7 @@ class _QuizPageState extends State<QuizPage> {
   @override
   void dispose() {
     _timer.cancel();
+   
     super.dispose();
   }
 
@@ -92,14 +95,16 @@ class _QuizPageState extends State<QuizPage> {
                         setState(() {
                           _selectedAnswer = ans;
                         });
-
-                        Future.delayed(Duration(milliseconds: 100), () {
-                          if(_currentindex==questionObjects.length-1){
-                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_)=>const ResultPage()
-                ));
+                        if (ans == currentQuestion.correctAnswer) {
+                          _score++;
+                        }
+                        Future.delayed(const Duration(milliseconds: 100), () {
+                          if (_currentindex == questionObjects.length - 1) {
+                            pushResultscreen(context);
                           }
                           setState(() {
                             _currentindex++;
+                            _selectedAnswer='';
                           });
                         });
                       },
@@ -113,6 +118,14 @@ class _QuizPageState extends State<QuizPage> {
         ),
       )),
     );
+  }
+
+  void pushResultscreen(BuildContext context) {
+    Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (_) => ResultPage(
+              totalQuestion: widget.questions.length,
+              score: _score,
+            )));
   }
 }
 
