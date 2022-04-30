@@ -20,7 +20,7 @@ class HomePage extends StatelessWidget {
               ),
               ElevatedButton(onPressed: (){
                 Navigator.of(context).push(MaterialPageRoute(builder: (_)=>QuizPage(totalTime:10,
-                question:questionObjects,
+                questions:questionObjects,
                 )));
               }, child: const Text('Start'))
             ],

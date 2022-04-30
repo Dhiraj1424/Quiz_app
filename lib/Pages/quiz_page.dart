@@ -1,14 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:quiz_app/Pages/result_page.dart';
 import 'package:quiz_app/components/gradient_box.dart';
 import 'package:quiz_app/models/question.dart';
 
 class QuizPage extends StatefulWidget {
-  const QuizPage({Key? key, required this.totalTime, required this.question})
+  const QuizPage({Key? key, required this.totalTime, required this.questions})
       : super(key: key);
   final int totalTime;
-  final List<QuestionDataModel> question;
+  final List<QuestionDataModel> questions;
 
   @override
   State<QuizPage> createState() => _QuizPageState();
@@ -43,7 +44,7 @@ class _QuizPageState extends State<QuizPage> {
 
   @override
   Widget build(BuildContext context) {
-    final currentQuestion = widget.question[_currentindex];
+    final currentQuestion = widget.questions[_currentindex];
     return Scaffold(
       body: GradientBox(
           child: Container(
@@ -85,11 +86,21 @@ class _QuizPageState extends State<QuizPage> {
                     final ans = currentQuestion.answers[indext];
                     return AnswerTile(
                       isSelected: ans == _selectedAnswer,
-                      ans: ans,
+                      answ: ans,
                       correctAnswer: currentQuestion.correctAnswer,
                       onTab: () {
                         setState(() {
                           _selectedAnswer = ans;
+                        });
+
+                        Future.delayed(Duration(milliseconds: 100), () {
+                          if(_currentindex==questionObjects.length-1){
+                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_)=>const ResultPage()
+                ));
+                          }
+                          setState(() {
+                            _currentindex++;
+                          });
                         });
                       },
                     );
@@ -109,12 +120,12 @@ class AnswerTile extends StatelessWidget {
   const AnswerTile(
       {Key? key,
       required this.isSelected,
-      required this.ans,
+      required this.answ,
       required this.correctAnswer,
       required this.onTab})
       : super(key: key);
   final bool isSelected;
-  final String ans;
+  final String answ;
   final String correctAnswer;
   final Function onTab;
 
@@ -124,14 +135,14 @@ class AnswerTile extends StatelessWidget {
       color: cardColor,
       child: ListTile(
         onTap: () => onTab(),
-        title: Text(ans),
+        title: Text(answ),
       ),
     );
   }
 
   Color get cardColor {
     if (!isSelected) return Colors.white;
-    if (ans == correctAnswer) {
+    if (answ == correctAnswer) {
       return Colors.green;
     }
     return Colors.red;
